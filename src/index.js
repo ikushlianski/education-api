@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const userController = require('./user/user.controller');
+const schoolController = require('./school/school.controller');
 
 const app = express();
 const connectionUri = `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@education-tool-api-cluster-rcnpy.mongodb.net/education?retryWrites=true&w=majority`;
@@ -21,7 +22,7 @@ mongoose
 const appRouter = express.Router();
 app.use('/api/v1', appRouter);
 
-appRouter.use([userController]);
+appRouter.use([userController, schoolController]);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log('server started!'));
