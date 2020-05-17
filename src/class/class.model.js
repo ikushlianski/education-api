@@ -4,17 +4,18 @@ const ClassSchema = new mongoose.Schema(
   {
     name: {
       type: String,
+      required: true,
     },
     ownerSchool: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'School',
     },
     ownerTeacher: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
     teachers: {
-      type: [mongoose.Types.ObjectId],
+      type: [mongoose.Schema.Types.ObjectId],
       ref: 'User',
     },
   },
@@ -28,13 +29,13 @@ ClassSchema.pre('save', function (next) {
   if (this.ownerSchool && this.ownerTeacher) {
     const err = new Error('A class can belong to either School or Teacher');
     err.status = 400;
-    next(err);
+    return next(err);
   }
 
   if (!(this.ownerSchool || this.ownerTeacher)) {
     const err = new Error('A class must belong to either School or Teacher');
     err.status = 400;
-    next(err);
+    return next(err);
   }
 
   if (this.teachers.length > 1 && !this.ownerSchool) {
@@ -42,7 +43,7 @@ ClassSchema.pre('save', function (next) {
       'Class can have more than one Teacher only if it belongs to a School',
     );
     err.status = 400;
-    next(err);
+    return next(err);
   }
 
   next();

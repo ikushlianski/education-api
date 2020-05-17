@@ -10,13 +10,13 @@ const UserSchema = new mongoose.Schema({
     enum: [ROLES.principal, ROLES.student, ROLES.teacher],
   },
   school: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'School',
   },
 
   // for students only
   classes: {
-    type: [mongoose.Types.ObjectId],
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'Class',
   },
 });
@@ -31,7 +31,7 @@ UserSchema.pre('save', async function (next) {
       'Only Users with role "Student" can belong to a Class',
     );
     err.status = 400;
-    next(err);
+    return next(err);
   }
 
   // limit number of principals to 1
@@ -41,7 +41,7 @@ UserSchema.pre('save', async function (next) {
     if (count > 0) {
       const err = new Error('Only one Principal can exist in the system');
       err.status = 400;
-      next(err);
+      return next(err);
     }
   }
 

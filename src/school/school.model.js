@@ -5,7 +5,7 @@ const SchoolSchema = new mongoose.Schema({
 
   // could be embedded directly, since school can have only one principal
   principal: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },

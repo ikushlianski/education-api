@@ -15,6 +15,10 @@ userController
   .route('/schools/:schoolId/teachers/unassign')
   .post([restrictToRoles([ROLES.principal]), unassignTeacher]);
 
+userController
+  .route('/schools/:schoolId/class/:classId/students/assign')
+  .post([restrictToRoles([ROLES.principal]), assignStudent]);
+
 async function getAllTeachers(req, res) {
   try {
     const teachers = await userService.getAllTeachersFromSchool(
@@ -63,5 +67,12 @@ async function unassignTeacher(req, res) {
     return res.sendStatus(500);
   }
 }
+
+async function assignStudent(req, res) {
+  // similar logic to assigning teachers
+
+  // student unassigning also works the same way
+}
+
 
 module.exports = userController;
